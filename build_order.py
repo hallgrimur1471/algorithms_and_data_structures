@@ -11,19 +11,17 @@ def build_order(projects, dependencies):
             dealt_with.add(projects[i])
             continue
         j = i+1
-        print(i, j, projects)
         while (
             (j < len(projects)) and
             (projects[j] != dependencies.get(projects[i], ""))
         ):
             j += 1
+        dealt_with.add(projects[i])
         if j == len(projects):
-            dealt_with.add(projects[j])
             continue
         tmp = projects[i]
         projects[i] = projects[j]
         projects[j] = tmp
-        dealt_with.add(projects[j])
     return projects
 
 projects = ["a", "b", "c", "d", "e", "f"]

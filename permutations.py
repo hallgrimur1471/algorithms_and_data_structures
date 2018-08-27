@@ -44,6 +44,81 @@ def permutations(n):
             root_perms.append(permutation[0:i] + [n[0]] + permutation[i:])
     return root_perms
 
-#for p in permutations([1,2,3]):
-#    print(p)
-#print(rotate_right("abcdef", 2))
+def permutations_iterative(n):
+    function_stack = []
+    returning = False
+    return_val = None
+    function_stack.append((n, returning, return_val))
+    while function_stack:
+        (n, returning, return_val) = function_stack[-1]
+        if returning == False:
+            if len(n) < 1:
+                returning = True
+                return_val = [n]
+                function_stack.pop()
+                function_stack[-1] = (function_stack[-1][0],
+                                      returning, return_val)
+                continue
+            function_stack.append((n[1:], False, None))
+            continue
+        else:
+            root_perms = []
+            for permutation in return_val:
+                for i in range(len(permutation)+1):
+                    root_perms.append(
+                        permutation[0:i] + [n[0]] + permutation[i:]
+                    )
+            returning = True
+            return_val = root_perms
+            function_stack.pop()
+            if function_stack:
+                function_stack[-1] = (function_stack[-1][0],
+                                      returning, return_val)
+    return return_val
+
+class FunctionStack():
+    def __init__(self):
+        self.stack_frames = []
+        self.child_return_val = None
+        self.child_just_returned = False
+
+    def append(self, stack_frame):
+        self.stack_frames.append(stack_frame)
+        self.child_return_val = None
+        self.child_just_returned = False
+
+    def return_(self, return_val):
+        self.stack_frames.pop()
+        self.child_return_val = return_val
+        self.child_just_returned = True
+
+    def stack_frame_variables(self):
+        return self.stack_frames[-1].variables
+
+class StackFrame():
+    def __init__(self, variables=None):
+        self.variables = variables
+
+def permutations_iterative2(n):
+    function_stack = FunctionStack()
+    function_stack.append(StackFrame(n))
+    while len(function_stack.stack_frames) > 0:
+        n = function_stack.stack_frame_variables()
+        print(n)
+        if function_stack.child_just_returned == False:
+            if len(n) < 1:
+                function_stack.return_([n])
+                continue
+            function_stack.append(StackFrame(n[1:]))
+            continue
+        else:
+            root_perms = []
+            for permutation in function_stack.child_return_val:
+                for i in range(len(permutation)+1):
+                    root_perms.append(
+                        permutation[0:i] + [n[0]] + permutation[i:]
+                    )
+            function_stack.return_(root_perms)
+    return function_stack.child_return_val
+
+print(permutations_iterative2([1,2,3]))

@@ -132,6 +132,93 @@ def bfs4(G, s, t):
             q.appendleft(i)
     return False
 
+"""
+Other implementations
+"""
+
+def dfs5(G, s, t):
+    """
+    Args:
+        G (dict): A hashmap of adjacency lists of the graph G
+        s: Starting node
+        t: Target node
+    Returns:
+        path (list): A path from s to t.
+                     path==[] if there is no such path
+    """
+    def dfs5_helper(G, u, t, visited):
+        """
+        Args:
+            u: Current node
+            visited (set): A hashset of nodes already visited
+        Returns:
+            path (list): A path from u to t.
+                         path==[] if there is no such path
+        """
+        path = []
+        visited.add(u)
+        path.append(u)
+        if u == t:
+            return path
+        for neighbour in G[u]:
+            if neighbour in visited:
+                continue
+            path_left = dfs5_helper(G, neighbour, t, visited)
+            if path_left != []:
+                return path + path_left
+        return []
+
+    return dfs5_helper(G, s, t, set())
+
+def dfs5_iterative(G, s, t):
+    """
+    Args:
+        G (dict): A hashmap of adjacency lists of the graph G
+        s: Starting node
+        t: Target node
+    Returns:
+        path (list): A path from s to t.
+                     path==[] if there is no such path
+    """
+    visited = set()
+    path = list()
+
+    stack = []
+    fifo = deque() # first in first out
+    fifo.appendleft((G, s, t, visited))
+    stack.append(fifo)
+    return_queue = deque() # first in first out
+    while len(stack) > 0:
+        fifo = stack.pop()
+        (G, u, t, visited) = fifo.pop()
+        if len(fifo) > 0:
+            stack.append(fifo)
+        new_fifo = deque()
+
+        if len(return_queue) > 0 and return_queue[0] != []:
+            return_queue.appendleft([u])
+            continue
+
+        path = []
+        visited.add(u)
+        path.append(u)
+        if u == t:
+            return_queue.appendleft(path)
+            continue
+        for neighbour in G[u]:
+            if neighbour in visited:
+                continue
+            new_fifo.appendleft((G, neighbour, t, visited))
+        if len(new_fifo) > 0:
+            stack.append(new_fifo)
+            continue
+        return_queue.appendleft([])
+
+    return_val = []
+    while len(return_queue) > 0:
+        return_val += return_queue.pop()
+    return return_val
+
 graph1 = dict()
 graph1[1] = [2,3,4]
 graph1[2] = [5,6]
@@ -232,3 +319,8 @@ print("bfs4")
 bfs4(graph3, 0, 7)
 print("bfs4")
 bfs4(graph3_with_cycle, 0, 7)
+
+print("dfs5")
+print(dfs5(graph1_with_cycle, 1, 8))
+print("dfs5_iterative")
+print(dfs5_iterative(graph1_with_cycle, 1, 8))
