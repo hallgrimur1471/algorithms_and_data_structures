@@ -1,7 +1,7 @@
 from collections import deque
 
-class MovingAverage:
 
+class MovingAverage:
     def __init__(self, size):
         """
         Initialize your data structure here.
@@ -27,7 +27,7 @@ class MovingAverage:
             self.moving_average /= len(self.window)
         return self.moving_average
 
+
 # Your MovingAverage object will be instantiated and called as such:
 # obj = MovingAverage(size)
 # param_1 = obj.next(val)
-
