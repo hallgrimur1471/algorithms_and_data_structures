@@ -1,5 +1,6 @@
-# Python
+# Cache
 __pycache__
+.mypy_cache
 
 # vim
 /**/*.swp

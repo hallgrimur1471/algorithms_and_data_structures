@@ -8,6 +8,7 @@ Adjacency List
 No cycle detection
 """
 
+
 def dfs1(G, s, t):
     print(s)
     if s == t:
@@ -16,6 +17,7 @@ def dfs1(G, s, t):
         if dfs1(G, u, t):
             return True
     return False
+
 
 def bfs1(G, s, t):
     q = deque()
@@ -29,10 +31,12 @@ def bfs1(G, s, t):
             q.append(u)
     return False
 
+
 """
 Adjacency List
 cycle detection
 """
+
 
 def dfs2(G, s, t, v):
     print(s)
@@ -45,6 +49,7 @@ def dfs2(G, s, t, v):
         if dfs2(G, u, t, v):
             return True
     return False
+
 
 def bfs2(G, s, t):
     v = set()
@@ -62,10 +67,12 @@ def bfs2(G, s, t):
             q.append(u)
     return False
 
+
 """
 Adjacency List with weights
 cycle detection
 """
+
 
 def dfs3(G, s, t, v):
     print(s)
@@ -78,6 +85,7 @@ def dfs3(G, s, t, v):
         if dfs3(G, u, t, v):
             return True
     return False
+
 
 def bfs3(G, s, t):
     v = set()
@@ -95,10 +103,12 @@ def bfs3(G, s, t):
             q.appendleft(u)
     return False
 
+
 """
 Adjacency Matrix with weights
 cycle detection
 """
+
 
 def dfs4(G, s, t, v):
     v.add(s)
@@ -113,6 +123,7 @@ def dfs4(G, s, t, v):
         if dfs4(G, i, t, v):
             return True
     return False
+
 
 def bfs4(G, s, t):
     v = set()
@@ -132,9 +143,11 @@ def bfs4(G, s, t):
             q.appendleft(i)
     return False
 
+
 """
 Other implementations
 """
+
 
 def dfs5(G, s, t):
     """
@@ -146,6 +159,7 @@ def dfs5(G, s, t):
         path (list): A path from s to t.
                      path==[] if there is no such path
     """
+
     def dfs5_helper(G, u, t, visited):
         """
         Args:
@@ -170,6 +184,7 @@ def dfs5(G, s, t):
 
     return dfs5_helper(G, s, t, set())
 
+
 def dfs5_iterative(G, s, t):
     """
     Args:
@@ -184,10 +199,10 @@ def dfs5_iterative(G, s, t):
     path = list()
 
     stack = []
-    fifo = deque() # first in first out
+    fifo = deque()  # first in first out
     fifo.appendleft((G, s, t, visited))
     stack.append(fifo)
-    return_queue = deque() # first in first out
+    return_queue = deque()  # first in first out
     while len(stack) > 0:
         fifo = stack.pop()
         (G, u, t, visited) = fifo.pop()
@@ -219,11 +234,12 @@ def dfs5_iterative(G, s, t):
         return_val += return_queue.pop()
     return return_val
 
+
 graph1 = dict()
-graph1[1] = [2,3,4]
-graph1[2] = [5,6]
-graph1[3] = [7,8]
-graph1[4] = [9,10]
+graph1[1] = [2, 3, 4]
+graph1[2] = [5, 6]
+graph1[3] = [7, 8]
+graph1[4] = [9, 10]
 graph1[5] = []
 graph1[6] = []
 graph1[7] = []
@@ -239,7 +255,7 @@ print("dfs1")
 dfs1(graph1, 1, 8)
 
 # would throw RecursionError:
-#dfs1(graph1_with_cycle, 1, 8)
+# dfs1(graph1_with_cycle, 1, 8)
 
 print("bfs1")
 bfs1(graph1, 1, 8)
